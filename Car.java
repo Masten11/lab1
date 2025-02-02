@@ -3,11 +3,11 @@ import java.util.Scanner;
 
 
 public abstract class Car implements Movable{
-    private int nrDoors;    // Number of doors on the car      
-    private double enginePower;   
-    private Color color;          
-    private String modelName;    
-    private double currentSpeed;  
+    private int nrDoors;          // Number of doors on the car (private)
+    private double enginePower;   // Engine power of the car (private)
+    private Color color;          // Color of the car (private)
+    private String modelName;     // The car model name (private)
+    private double currentSpeed;  // The current speed of the car (private)
 
     // Constructor to initialize the car's attributes
 
@@ -23,18 +23,18 @@ public abstract class Car implements Movable{
         startEngine();
     }
 
+    //förflyttar bilen i x led eller y led baserat på direction
     public void move() {
-        // Update position based on speed and direction
         x += getCurrentSpeed() * Math.cos(Math.toRadians(direction));
         y += getCurrentSpeed() * Math.sin(Math.toRadians(direction));
     }
 
     public void turnLeft() {
-        direction -= 90; // Turn left by 90 degrees
+        direction -= 90; // Förflyttning till Vänster med 90 grader
     }
 
     public void turnRight() {
-        direction += 90; // Turn right by 90 degrees
+        direction += 90; // Förflyttning till Höger med 90 grader
     }
 
     public double getDirection() {
@@ -49,17 +49,22 @@ public abstract class Car implements Movable{
         return y;
     }
 
- 
+    // Public getter for nrDoors
     public int getNrDoors() {
         return nrDoors;
     }
 
-  
+    // Public getter for modelname
+    public String getModelName() {
+        return modelName;
+    }
+
+    // Public getter for enginePower
     public double getEnginePower() {
         return enginePower;
     }
 
- 
+    // Public getter and setter for color
     public Color getColor() {
         return color;
     }
@@ -68,11 +73,12 @@ public abstract class Car implements Movable{
         this.color = color;
     }
 
-    // Denna används endast för testningen
+    // Public getter for current speed
     public double getCurrentSpeed() {
         return currentSpeed;
     }
 
+    // Protected methods for subclasses to control the engine
     protected void startEngine() {
         currentSpeed = 0.1;
     }
@@ -83,11 +89,6 @@ public abstract class Car implements Movable{
 
     protected abstract double speedFactor();
 
-    public void setCurrentSpeed(double speed){
-        if (speed >= 0 && speed <= 125){
-            this.currentSpeed = speed;
-        }
-    }
 
     public void incrementSpeed(double amount){
         // speed cant accede enginepower
@@ -125,9 +126,11 @@ public abstract class Car implements Movable{
 
         if (carChoice.equals("saab")) {
             car = new Saab95();
+            car.startEngine();
             System.out.println("You chose a Saab.");
         } else if (carChoice.equals("volvo")) {
             car = new Volvo240();
+            car.startEngine();
             System.out.println("You chose a Volvo.");
         } else {
             System.out.println("Invalid choice. Please choose 'Saab' or 'Volvo'.");
