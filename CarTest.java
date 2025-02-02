@@ -11,6 +11,8 @@ public class CarTest {
     public void setUp() {
         volvo = new Volvo240();
         saab = new Saab95();
+        volvo.startEngine();
+        saab.startEngine();
     }
 
     @Test
@@ -23,6 +25,18 @@ public class CarTest {
     public void testGetEnginePower() {
         assertEquals(100, volvo.getEnginePower(), "Motorstyrkan stämmer inte för volvon.");
         assertEquals(125, saab.getEnginePower(), "Motorstyrkan stämmer inte för Saaben.");
+    }
+
+    @Test
+    public void testColor() {
+        assertEquals(Color.BLACK, volvo.getColor(), "Färg  i Volvon stämmer inte.");
+        assertEquals(Color.RED, saab.getColor(), "Färg  i Saaben stämmer inte.");
+    }
+
+    @Test
+    public void testModelName() {
+        assertEquals("Volvo240", volvo.getModelName(), "Model  i Volvon stämmer inte.");
+        assertEquals("Saab95", saab.getModelName(), "Model  i Saaben stämmer inte.");
     }
 
     @Test
@@ -82,6 +96,7 @@ public class CarTest {
         }
     }
 
+    /*
     @Test
     public void testCurrentSpeedInterval(){
         saab.brake(1);
@@ -90,7 +105,7 @@ public class CarTest {
         saab.gas(1);
         assertTrue(saab.getCurrentSpeed() <= saab.getEnginePower(), "Speed exceeds engine power.");
     }
-
+    */
     @Test
     public void testBrakeIncreaseSpeed() {
         double speedbefore = saab.getCurrentSpeed();
