@@ -3,11 +3,13 @@ public class Ramp {
     private boolean isRampDown; // Represents the state of the ramp (for CarTransport)
     private final double maxAngle; // Maximum angle for the ramp (for Scania)
 
+    //overloadar
     public Ramp(double maxAngle) {
         this.angle = 0;
         this.maxAngle = maxAngle;
     }
 
+    //overloadar
     public Ramp() {
         this(0);
         this.isRampDown = false;// Default maxAngle of 0 (binary state only)
