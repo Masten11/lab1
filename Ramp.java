@@ -1,34 +1,22 @@
 public class Ramp {
-    private double angle; // Represents the angle of the ramp (for Scania)
-    private boolean isRampDown; // Represents the state of the ramp (for CarTransport)
-    private final double maxAngle; // Maximum angle for the ramp (for Scania)
+    private double angle = 0; // Represents the angle of the ramp (for Scania)
+    private final double maxAngle = 70; // Maximum angle for the ramp (for Scania)
 
-    //overloadar
-    public Ramp(double maxAngle) {
-        this.angle = 0;
-        this.maxAngle = maxAngle;
-    }
-
-    //overloadar
-    public Ramp() {
-        this(0);
-        this.isRampDown = false;// Default maxAngle of 0 (binary state only)
-    }
-
-    // For CarTransport: binary state (up/down)
+    // For CarTransport (up/down)
     public void raise() {
-        this.isRampDown = false;
+        this.angle = 0;
     }
 
     public void lower() {
-        this.isRampDown = true;
+        this.angle = maxAngle;
     }
 
     public boolean isRampDown() {
-        return isRampDown;
+        if (this.angle == maxAngle) {return true;}
+        else {return false;}
     }
 
-    // For Scania: angular state
+    // For Scania:
     public void raise(double amount) {
         this.angle = Math.max(this.angle - amount, 0);
     }

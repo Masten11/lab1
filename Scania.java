@@ -1,12 +1,12 @@
 import java.awt.*;
 
-public class Scania extends Car {
+public class Scania extends Car implements RampInterface{
     private final Ramp ramp;
 
     // Constructor to initialize Scania attributes
     public Scania() {
         super(2, 90, Color.white, "Scania", 7.0, 2.2); // Initialize Car's attributes
-        this.ramp = new Ramp(70);
+        this.ramp = new Ramp();
     }
 
     @Override
@@ -15,15 +15,35 @@ public class Scania extends Car {
     }
 
 
-    public void raisePlatform(double amount) {
+    //ifall ingen vinkel anges sätts vinkeln till min
+    @Override
+    public void raise() {
+        if (getCurrentSpeed() > 0) {
+            throw new IllegalArgumentException("The truck cannot be moving");
+        }
+        ramp.raise(70);
+    }
+
+
+    public void raise(double amount) {
         if (getCurrentSpeed() > 0) {
             throw new IllegalArgumentException("The truck cannot be moving");
         }
         ramp.raise(amount);
     }
 
+
+    //ifall ingen vinkel anges sätts vinkeln till max
+    @Override
+    public void lower() {
+        if (getCurrentSpeed() > 0) {
+            throw new IllegalArgumentException("The truck cannot be moving");
+        }
+        ramp.lower(70);
+    }
+
     // Lower the ramp by a specific amount
-    public void lowerPlatform(double amount) {
+    public void lower(double amount) {
         if (getCurrentSpeed() > 0) {
             throw new IllegalArgumentException("The truck cannot be moving");
         }

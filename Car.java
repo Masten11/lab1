@@ -175,6 +175,4 @@ public abstract class Car implements Movable{
 
         scanner.close();
     }
-
-
 }

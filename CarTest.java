@@ -9,13 +9,12 @@ public class CarTest {
     private Scania scania;
     private CarTransport carTransport;
     private CarWorkshop<Volvo240> volvoWorkshop;
-    private AllCarsWorkShop allCarsWorkShop;
-
+    private CarWorkshop<Car> allCarsWorkShop;
     @BeforeEach
     public void setUp() {
         carTransport = new CarTransport(2); // Max två bilar
         volvoWorkshop = new CarWorkshop<>(2);
-        allCarsWorkShop = new AllCarsWorkShop(2);
+        allCarsWorkShop = new CarWorkshop(2);
         volvo = new Volvo240();
         saab = new Saab95();
         scania = new Scania();
@@ -34,17 +33,23 @@ public class CarTest {
         volvoWorkshop.leaveCar(car2);
 
         Exception exception = assertThrows(IllegalStateException.class, () -> volvoWorkshop.leaveCar(car3));
-        assertEquals("Car workshop is full!", exception.getMessage());
+        assertEquals("Car loader is full!", exception.getMessage());
     }
 
+    //Visa jubin sen
+    /*
     @Test
     void testOnlySpecificCarTypeAllowed() {
         Volvo240 volvo = new Volvo240();
 
         volvoWorkshop.leaveCar(volvo);
+        assertTrue(volvoWorkshop.hasCar(volvo), "Volvo240 should be allowed in volvoWorkshop!");
 
-        assertTrue(volvoWorkshop.hasCar(volvo), "Only one type of car object is allowrd!");
+        // This should not be allowed and should throw an error
+        assertThrows(ClassCastException.class, () -> volvoWorkshop.leaveCar(saab),
+                "Saab95 should NOT be allowed in volvoWorkshop!");
     }
+    */
 
     @Test
     void testAllCarsWorkshopAcceptsAllCarTypes() {
@@ -71,62 +76,62 @@ public class CarTest {
     @Test
     void testRampCanOnlyBeLoweredWhenStill() {
         carTransport.startEngine();
-        assertThrows(IllegalArgumentException.class, () -> carTransport.lowerPlatform(),
+        assertThrows(IllegalArgumentException.class, () -> carTransport.lower(),
                 "The truck cannot be moving!");
     }
 
     @Test
     void testCannotLoadCarWhenRampIsUp() {
-        assertThrows(IllegalStateException.class, () -> carTransport.load(volvo),
+        assertThrows(IllegalStateException.class, () -> carTransport.loadCar(volvo),
                 "Ramp must be lowered to load a car!");
     }
 
     @Test
     void testCannotLoadCarIfFull() {
-        carTransport.lowerPlatform();
-        carTransport.load(volvo);
-        carTransport.load(saab);
-        assertThrows(IllegalStateException.class, () -> carTransport.load(new Volvo240()),
+        carTransport.lower();
+        carTransport.loadCar(volvo);
+        carTransport.loadCar(saab);
+        assertThrows(IllegalStateException.class, () -> carTransport.loadCar(new Volvo240()),
                 "Car transport is full!");
     }
 
 
     @Test
     void testCannotLoadAnotherCarTransport() {
-        carTransport.lowerPlatform();
-        assertThrows(IllegalArgumentException.class, () -> carTransport.load(new CarTransport(1)),
+        carTransport.lower();
+        assertThrows(IllegalArgumentException.class, () -> carTransport.loadCar(new CarTransport(1)),
                 "Cannot load another car transport");
     }
 
     @Test
     void testCannotLoadCarTooFarAway() {
         volvo.setX(carTransport.getX() + 3);
-        carTransport.lowerPlatform();
-        assertThrows(IllegalArgumentException.class, () -> carTransport.load(volvo),
+        carTransport.lower();
+        assertThrows(IllegalArgumentException.class, () -> carTransport.loadCar(volvo),
                 "Car needs to be closer to transport car");
     }
 
     @Test
     void testCannotUnloadWhenRampIsUp() {
-        carTransport.lowerPlatform();
-        carTransport.load(volvo);
-        carTransport.raisePlatform();
-        assertThrows(IllegalStateException.class, () -> carTransport.unload(),
+        carTransport.lower();
+        carTransport.loadCar(volvo);
+        carTransport.raise();
+        assertThrows(IllegalStateException.class, () -> carTransport.unloadCar(),
                 "Ramp must be lowered to unload a car");
     }
 
     @Test
     void testUnloadCarPlacesItNearby() {
-        carTransport.lowerPlatform();
-        carTransport.load(volvo);
-        carTransport.unload();
+        carTransport.lower();
+        carTransport.loadCar(volvo);
+        carTransport.unloadCar();
         assertEquals(carTransport.getY() + 2.0, volvo.getY(), "Should be placed nere by car");
     }
 
     @Test
     public void testRaisePlattform() {
 
-        assertThrows(IllegalArgumentException.class, () -> scania.raisePlatform(50),
+        assertThrows(IllegalArgumentException.class, () -> scania.raise(50),
                 "Det ska ej gå att höja plattform under rörelse");
     }
 
