@@ -1,4 +1,4 @@
-public class Ramp {
+public class Ramp implements RampInterface {
     private double angle = 0; // Represents the angle of the ramp (for Scania)
     private final double maxAngle = 70; // Maximum angle for the ramp (for Scania)
 
