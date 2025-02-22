@@ -10,11 +10,11 @@ import java.util.ArrayList;
 * modifying the model state and the updating the view.
  */
 
-public class CarController {
+public class CarController implements CarControllerInterface {
     // member fields:
 
     // The delay (ms) corresponds to 20 updates a sec (hz)
-    private final int delay = 50;
+    private final int delay = 45;
     // The timer is started with a listener (see below) that executes the statements
     // each step between delays.
     private Timer timer = new Timer(delay, new TimerListener());
@@ -36,7 +36,6 @@ public class CarController {
         Scania scania = new Scania();
         Volvo240 volvo2 = new Volvo240();
 
-
         saab.setX(0);
         saab.setY(100);
 
@@ -49,7 +48,6 @@ public class CarController {
         volvo240CarWorkshop.setX(300);
         volvo240CarWorkshop.setY(300);
 
-
         cc.cars.add(volvo);
         cc.cars.add(saab);
         cc.cars.add(scania);
@@ -60,6 +58,7 @@ public class CarController {
 
         // Start the timer
         cc.timer.start();
+
     }
 
     /* Each step the TimerListener moves all the cars in the list and tells the
@@ -70,7 +69,11 @@ public class CarController {
             int screenwidth = frame.getWidth();
             for (int i = 0; i < cars.size(); i++) {
                 Car car = cars.get(i);
-                car.move();
+                try {
+                    car.move();
+                } catch (IllegalArgumentException ex) {
+                    continue;
+                }
                 int x = (int) Math.round(car.getX());
                 int y = (int) Math.round(car.getY());
 
@@ -80,10 +83,12 @@ public class CarController {
 
                 frame.drawPanel.moveit(i, x, y); // Use the car index to move the correct car
 
+                //if car is a volvo
                 if (car instanceof Volvo240) {
                     double workshopX = volvo240CarWorkshop.getX();
                     double workshopY = volvo240CarWorkshop.getY();
 
+                    //if it collides with workshop
                     if (x >= workshopX && x <= workshopX + 100 &&
                             y >= workshopY && y <= workshopY + 100) {
                         // Collision detected, load volvo2 into the workshop
@@ -100,15 +105,23 @@ public class CarController {
     }
 
     // Calls the gas method for each car once
-    void gas(int amount) {
+
+    public void gas(int amount) {
         double gas = ((double) amount) / 100;
         for (Car car : cars
                 ) {
-            car.gas(gas);
+            try {
+                car.gas(gas);
+            }
+            catch (IllegalArgumentException ex){
+                continue;
+            }
+
         }
     }
 
-    void brake(int amount) {
+
+    public void brake(int amount) {
         double brakeForce = ((double) amount) / 100;
         for (Car car : cars) {
             car.brake(brakeForce);
@@ -116,7 +129,7 @@ public class CarController {
     }
 
     // Enables turbo mode for Saab95
-    void setTurbo(boolean on) {
+    public void setTurbo(boolean on) {
         for (Car car : cars) {
             if (car instanceof Saab95) {
                 Saab95 saab = (Saab95) car;
@@ -130,7 +143,7 @@ public class CarController {
     }
 
     // Lifts the truck bed for Scania
-    void liftBed() {
+    public void liftBed() {
         for (Car car : cars) {
             if (car instanceof Scania) {
                 Scania scania = (Scania) car;
@@ -140,7 +153,7 @@ public class CarController {
     }
 
     // Lowers the truck bed for Scania
-    void lowerBed() {
+    public void lowerBed() {
         for (Car car : cars) {
             if (car instanceof Scania) {
                 Scania scania = (Scania) car;
@@ -150,14 +163,14 @@ public class CarController {
     }
 
     // Starts all cars
-    void startAllCars() {
+    public void startAllCars() {
         for (Car car : cars) {
             car.startEngine();
         }
     }
 
     // Stops all cars
-    void stopAllCars() {
+    public void stopAllCars() {
         for (Car car : cars) {
             car.stopEngine();
         }
