@@ -44,11 +44,11 @@ public abstract class Car implements Movable{
         return direction;
     }
 
-    public double getX() {
+    protected double getX() {
         return x;
     }
 
-    public double getY() {
+    protected double getY() {
         return y;
     }
 
@@ -91,7 +91,9 @@ public abstract class Car implements Movable{
 
     // Protected methods for subclasses to control the engine
     protected void startEngine() {
-        currentSpeed = 0.1;
+        if (currentSpeed==0) {
+            currentSpeed = 0.1;
+        }
     }
 
     protected void stopEngine() {
@@ -108,14 +110,21 @@ public abstract class Car implements Movable{
         y = amount;
     }
 
+    protected void setDirection(double amount) {
+        direction = amount;
+    }
+
     public void incrementSpeed(double amount){
         // speed cant accede enginepower
-        this.currentSpeed = Math.min(getCurrentSpeed() + speedFactor() * amount, getEnginePower());
+        if (currentSpeed !=0) {
+            currentSpeed = Math.min(getCurrentSpeed() + speedFactor() * amount, getEnginePower());
+        }
+
     }
 
     public void decrementSpeed(double amount){
         // speed cant be below 0
-        this.currentSpeed = Math.max(getCurrentSpeed() - speedFactor() * amount,0);
+        currentSpeed = Math.max(getCurrentSpeed() - speedFactor() * amount,0);
     }
 
 
@@ -126,53 +135,10 @@ public abstract class Car implements Movable{
         incrementSpeed(amount);
     }
 
-    // TODO fix this method according to lab pm
     public void brake(double amount){
         if (amount < 0 || amount > 1) {
             throw new IllegalArgumentException("Amount must be between 0 and 1");
         }
         decrementSpeed(amount);
-    }
-
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("What car would you like? (Saab/Volvo): ");
-        String carChoice = scanner.nextLine().trim().toLowerCase();
-
-        Car car = null;
-
-        if (carChoice.equals("saab")) {
-            car = new Saab95();
-            car.startEngine();
-            System.out.println("You chose a Saab.");
-        } else if (carChoice.equals("volvo")) {
-            car = new Volvo240();
-            car.startEngine();
-            System.out.println("You chose a Volvo.");
-        } else {
-            System.out.println("Invalid choice. Please choose 'Saab' or 'Volvo'.");
-            return;
-        }
-
-
-        System.out.println("Engine started. Current speed: " + car.getCurrentSpeed());
-
-        if (car instanceof Saab95) {
-            ((Saab95) car).setTurboOn();
-            System.out.println("Turbo turned on.");
-        }
-
-        car.gas(0.5); // Gas pedal at 50%
-        System.out.println("Accelerating. Current speed: " + car.getCurrentSpeed());
-
-        car.brake(0.2);
-        System.out.println("Braking. Current speed: " + car.getCurrentSpeed());
-
-
-        car.stopEngine();
-        System.out.println("Engine stopped. Current speed: " + car.getCurrentSpeed());
-
-        scanner.close();
     }
 }
