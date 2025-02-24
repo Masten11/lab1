@@ -59,6 +59,13 @@ public class Scania extends Car implements RampInterface{
     }
 
     @Override
+    protected void startEngine() {
+        if (ramp.getAngle()==0) {
+            super.startEngine();
+        }
+    }
+
+    @Override
     public void gas(double amount){
         if (ramp.getAngle() < 70) {
             throw new IllegalArgumentException("Angle cannot be greater than 0");
