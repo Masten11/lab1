@@ -145,9 +145,14 @@ public class CarController implements CarControllerInterface {
     // Lifts the truck bed for Scania
     public void liftBed() {
         for (Car car : cars) {
-            if (car instanceof Scania) {
-                Scania scania = (Scania) car;
-                scania.raise();
+            try {
+                if (car instanceof Scania) {
+                    Scania scania = (Scania) car;
+                    scania.raise();
+                }
+            }
+            catch (IllegalArgumentException ex){
+                continue;
             }
         }
     }
@@ -155,9 +160,14 @@ public class CarController implements CarControllerInterface {
     // Lowers the truck bed for Scania
     public void lowerBed() {
         for (Car car : cars) {
-            if (car instanceof Scania) {
-                Scania scania = (Scania) car;
-                scania.lower();
+            try {
+                if (car instanceof Scania) {
+                    Scania scania = (Scania) car;
+                    scania.lower();
+                }
+            }
+            catch (IllegalArgumentException ex) {
+                continue;
             }
         }
     }
