@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Volvo240 extends Car {
+public class Volvo240 extends PassengerCar {
     private static final double trimFactor = 1.25; // Use private for constants
 
     // Constructor to initialize Volvo240 attributes
