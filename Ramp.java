@@ -1,8 +1,7 @@
 public class Ramp implements RampInterface {
     private double angle = 0; // Represents the angle of the ramp (for Scania)
     private final double maxAngle = 70; // Maximum angle for the ramp (for Scania)
-
-    // For CarTransport (up/down)
+    
     public void raise() {
         this.angle = 0;
     }
