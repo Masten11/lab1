@@ -1,0 +1,7 @@
+import java.awt.*;
+
+public abstract class PassengerCar extends Car {
+    protected PassengerCar (int nrDoors, double enginePower, Color color, String modelName, double length, double width) {
+        super(nrDoors,enginePower, color, modelName, length, width);
+    }
+}
